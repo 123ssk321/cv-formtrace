@@ -1,0 +1,579 @@
+{
+  "project_slug": "formtrace",
+  "project_name": "FormTrace",
+  "track": "quick",
+  "first_public_result_month": 4,
+  "total_hours": 416,
+  "reserve_hours": 80,
+  "milestones": [
+    {
+      "id": "M1",
+      "title": "Scope, contracts and publication preparation",
+      "description": "Weeks 1-2 after activation; FT-001..003: 24 task hours + 8 reserve = 32. Public repository already exists; planning publication is not a functional result."
+    },
+    {
+      "id": "M2",
+      "title": "Exact-label synthetic data and safe ingestion",
+      "description": "Weeks 3-6; FT-004..007: 46 task hours + 18 reserve = 64. Reproducible disjoint corpus and bounded raster intake."
+    },
+    {
+      "id": "M3",
+      "title": "Evidence-linked extraction and abstention",
+      "description": "Weeks 7-10; FT-008..012: 58 task hours + 6 reserve = 64. Pinned Tesseract Portuguese OCR, extraction/rules and reproducible measurement."
+    },
+    {
+      "id": "M4",
+      "title": "Review workflow and auditable export",
+      "description": "Weeks 11-13; FT-013..016: 44 task hours + 4 reserve = 48. Review, revisions, exports and session-isolated API."
+    },
+    {
+      "id": "M5",
+      "title": "First functional public result",
+      "description": "Weeks 14-16, month 4; FT-017..020: 48 task hours. Working sample demo, offline local package and honest benchmark. Earlier reserves are pooled for blockers; cumulative 220 work + 36 reserve = 256 hours."
+    },
+    {
+      "id": "M6",
+      "title": "Product validation and deployment readiness",
+      "description": "Weeks 17-20; FT-021..024: 44 task hours + 20 reserve = 64. Timed workflow, optional existing public labels, clean-install rehearsal and continue/narrow/park decision."
+    },
+    {
+      "id": "M7",
+      "title": "Single-organization private hardening",
+      "description": "Weeks 21-23; FT-025..028: 36 task hours + 12 reserve = 48. Conditional on continuation: authentication, ownership, migration/restore and operations."
+    },
+    {
+      "id": "M8",
+      "title": "Maintenance rehearsal and final handoff",
+      "description": "Weeks 24-26, approximately month 6; FT-029..032: 36 task hours + 12 reserve = 48. License/regression/update drills and evidence-based final decision."
+    }
+  ],
+  "issues": [
+    {
+      "id": "FT-001",
+      "title": "Freeze workflow, activation and publication checklist",
+      "body": "Implementation:\nDocument the eight-field single-page invoice workflow, exclusions, day-one public planning status and explicit activation prerequisite. Prepare Luna's idempotent gh import checklist for the existing public repository; preserve FT IDs and record actuals without importing now. Parent supplies AGENTS.md.\n\nOutput paths (relative to FormTrace root):\ndocs/SCOPE.md; planning/import-checklist.md; planning/actuals.csv\n\nTesting and acceptance criteria:\nCheck all eight fields, supported inputs, excluded features, 16h global weekly limit and month-4 functional release definition against the execution plan. Validate backlog sums and dependencies. Acceptance: scope has no unresolved MVP choices; planning is never labeled implemented; no project is activated or person contacted.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 6,
+      "milestone": "M1",
+      "depends_on": [],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "definition"
+    },
+    {
+      "id": "FT-002",
+      "title": "Establish asset and data license admission gates",
+      "body": "Implementation:\nCreate machine-readable provenance/license manifests and a small validator. Record separate Tesseract engine, por traineddata, fonts, renderer and runtime dependency entries. Permit existing public human annotations when rights fit; reject unknown/noncommercial commercial-development uses. Choose and record a compatible code license before code publication.\n\nOutput paths (relative to FormTrace root):\ndata/licenses/manifest.json; data/licenses/README.md; scripts/check_licenses.py; LICENSE; tests/test_licenses.py\n\nTesting and acceptance criteria:\nTest approved, pending, excluded, missing-attribution and checksum-mismatch fixtures. Acceptance: pending/excluded assets cannot enter build/evaluation inputs; each approved entry names exact source/version, rights coverage and intended use. No data creation, annotation or blanket approval of a public corpus.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 8,
+      "milestone": "M1",
+      "depends_on": [
+        "FT-001"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "data-governance"
+    },
+    {
+      "id": "FT-003",
+      "title": "Define versioned records and API contracts",
+      "body": "Implementation:\nWrite JSON Schemas and OpenAPI for the eight fields, normalized raster coordinates, OCR tokens, review events, revisions, errors and endpoints in the plan. Set up minimal Python/TypeScript project configuration and contract-test CI so later tasks share one schema. Include generated client types and representative synthetic payloads.\n\nOutput paths (relative to FormTrace root):\ncontracts/record.schema.json; contracts/ocr.schema.json; contracts/openapi.yaml; contracts/examples/; web/src/generated/; pyproject.toml; web/package.json; .github/workflows/check.yml; tests/contracts/\n\nTesting and acceptance criteria:\nValidate valid/invalid payloads including null confidence, leading zeros, evidence bounds and stale revisions. Acceptance: unknown fields and incompatible versions fail; API error codes and state transitions are explicit; generated types match schemas and CI runs contract checks.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 10,
+      "milestone": "M1",
+      "depends_on": [
+        "FT-001"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "contracts"
+    },
+    {
+      "id": "FT-004",
+      "title": "Build deterministic invoice renderer with exact labels",
+      "body": "Implementation:\nImplement seeded fictional records, integer-cent arithmetic and 12 self-authored layout families using a licensed font. Emit PDF, canonical PNG and sidecar field values/polygons directly from placement operations. Implement generator CLI and config; do not use OCR or real invoice samples to derive truth.\n\nOutput paths (relative to FormTrace root):\ngenerator/render.py; generator/records.py; generator/layouts/; generator/config.yaml; tests/generator/test_render.py\n\nTesting and acceptance criteria:\nRegenerate 20 fixtures twice and compare normalized metadata/raster hashes; omit variable PDF timestamps from deterministic comparisons. Acceptance: all eight fields have exact values and placement polygons; money sums hold; evidence aligns within two pixels; no real identities, unlicensed assets or manual labels.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M2",
+      "depends_on": [
+        "FT-002",
+        "FT-003"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "synthetic-data"
+    },
+    {
+      "id": "FT-005",
+      "title": "Add geometric and photometric corruption pipeline",
+      "body": "Implementation:\nImplement seeded rotation, perspective, blur, JPEG compression, shadow, low contrast, crop and occlusion. Apply identical geometric transforms to field polygons, clip coordinates, and track visible area plus expected abstention flags. Produce two variants per base without moving splits.\n\nOutput paths (relative to FormTrace root):\ngenerator/corrupt.py; generator/visibility.py; tests/generator/test_corruptions.py; docs/DATA_GENERATION.md\n\nTesting and acceptance criteria:\nUse identity, known-corner transform and clipping property tests. Acceptance: identical seeds reproduce variants; no polygon is outside raster bounds; fully hidden/cropped required values are not marked safely observable; geometry error tolerance is stated and automatically checked. No hand fixing labels.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M2",
+      "depends_on": [
+        "FT-004"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "synthetic-data"
+    },
+    {
+      "id": "FT-006",
+      "title": "Freeze disjoint corpus manifests and release samples",
+      "body": "Implementation:\nGenerate 600 development, 300 validation and 600 sealed-test base records across 6/3/3 disjoint layout families, plus 120 negative cases and two variants per base. Freeze one variant per base for primary metrics. Keep family, supplier and base identities disjoint; separate public samples from sealed tests.\n\nOutput paths (relative to FormTrace root):\ngenerator/build_corpus.py; data/manifests/; data/samples/; evaluation/splits.json; scripts/check_splits.py; tests/generator/test_splits.py\n\nTesting and acceptance criteria:\nRun overlap/hash/seed checks and regenerate a subset from manifests. Acceptance: counts and hashes match; variants never cross splits; negative cases have exact expected review/rejection outcomes; runtime/public assets exclude truth sidecars and sealed test data. Publish only cleared small samples.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M2",
+      "depends_on": [
+        "FT-004",
+        "FT-005"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "synthetic-data"
+    },
+    {
+      "id": "FT-007",
+      "title": "Implement constrained upload and PDF rasterization",
+      "body": "Implementation:\nBuild the input validator and killable rasterization subprocess with 10MiB, one-page and 20MP limits. Use a license-cleared PDF rasterizer, rasterize at up to 300 DPI and scale to the pixel bound. Preserve transform metadata and never use PDF embedded text for inference.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/ingest/; tests/ingest/; docs/INPUT_LIMITS.md\n\nTesting and acceptance criteria:\nTest PNG/JPEG/PDF success, malformed/encrypted/multipage rejection, decompression bombs, path traversal and process timeout. Acceptance: typed errors match contracts, temp files clean up on failure and resource limits apply before expensive processing; source/raster coordinates round-trip.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 10,
+      "milestone": "M2",
+      "depends_on": [
+        "FT-002",
+        "FT-003",
+        "FT-006"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "ingestion"
+    },
+    {
+      "id": "FT-008",
+      "title": "Integrate pinned Tesseract Portuguese OCR and one retry",
+      "body": "Implementation:\nWrap Tesseract 5 plus separately pinned tessdata_fast por.traineddata using argument-array subprocess calls and TSV output. Default --oem 1 --psm 3; expose a bounded --psm 11 retry on the same raster. Normalize word rectangles/confidence and record engine/resource/config fingerprints. Implement adapter failures; no alternate engine, training or cloud service.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/ocr/tesseract.py; config/ocr.json; tests/ocr/; docs/OCR.md; data/licenses/manifest.json\n\nTesting and acceptance criteria:\nRun real OCR on 20 generated fixtures plus fake timeout/missing-resource/malformed-TSV cases. Acceptance: tokens and evidence conform to contract, negative confidence becomes null, no network is needed, process deadline is enforced and both passes retain distinct provenance. License checks cover engine and traineddata independently.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M3",
+      "depends_on": [
+        "FT-002",
+        "FT-003",
+        "FT-007"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "ocr"
+    },
+    {
+      "id": "FT-009",
+      "title": "Extract field candidates with spatial evidence",
+      "body": "Implementation:\nImplement Portuguese caption aliases and spatial matching for the eight required fields. Use token groups, aligned rows and nearby value candidates rather than exact generator coordinates. Preserve all ambiguity and token evidence. Add initial explicit caption/config file; do not access layout IDs, hidden truth or test labels.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/extraction/; config/field_aliases.json; tests/extraction/\n\nTesting and acceptance criteria:\nTest shifted layouts, duplicate totals, absent captions, split invoice identifiers and decoy values on development fixtures. Acceptance: every candidate points to actual raster tokens; missing fields stay null and multiple plausible values are retained as ambiguous; no invented currency or totals.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M3",
+      "depends_on": [
+        "FT-003",
+        "FT-008"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "extraction"
+    },
+    {
+      "id": "FT-010",
+      "title": "Normalize values and enforce invoice consistency",
+      "body": "Implementation:\nImplement Unicode/text normalization, identifier preservation, documented date parsing, EUR evidence and integer-cent money parsing. Add required-field and net+VAT=gross validation with one-cent tolerance. Preserve raw text; tax-ID check is syntactic only. Never infer missing totals from arithmetic.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/validation/; config/schema_policy.json; tests/validation/\n\nTesting and acceptance criteria:\nTest decimal comma/grouping, leading zeros, impossible/ambiguous dates, negative/malformed amounts, missing currency and arithmetic failures. Acceptance: deterministic rule codes and normalized values match contracts; all invalid/ambiguous required fields prevent automatic acceptance; no tax-validity claim.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 10,
+      "milestone": "M3",
+      "depends_on": [
+        "FT-009"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "validation"
+    },
+    {
+      "id": "FT-011",
+      "title": "Implement abstention policy and validation-only calibration",
+      "body": "Implementation:\nCombine required-field, evidence, ambiguity, OCR and arithmetic checks into versioned assisted/automatic policy. Trigger at most one sparse-text retry when required fields/captions remain unresolved. Conflicting normalized values between passes force review. Fit heuristic thresholds on validation only; keep automatic acceptance disabled by default.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/policy/; evaluation/calibrate.py; config/policy.json; tests/policy/\n\nTesting and acceptance criteria:\nTest missing evidence, conflicting passes, deadlines, thresholds and all state transitions. Acceptance: unresolved/unsafe records cannot auto-accept; scores are labeled heuristic; policy provenance is recorded and immutable for a benchmark run; calibration never reads sealed test truth.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M3",
+      "depends_on": [
+        "FT-006",
+        "FT-008",
+        "FT-009",
+        "FT-010"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "decision-policy"
+    },
+    {
+      "id": "FT-012",
+      "title": "Build reproducible metrics and confidence-bound harness",
+      "body": "Implementation:\nImplement normalized exact match, polygon IoU, coverage, accepted-record error with one-sided 95% exact binomial upper bound, negative-set safety and latency reports. Evaluate one frozen variant per base for primary counts; report other variants separately. Add automatic-mode gate requiring all specified thresholds.\n\nOutput paths (relative to FormTrace root):\nevaluation/run.py; evaluation/metrics.py; evaluation/report.py; tests/evaluation/; reports/baseline/\n\nTesting and acceptance criteria:\nUse small known-answer cases to verify metric denominators, missed fields, IoU and interval boundaries. Acceptance: a zero-error set below 300 accepted records cannot enable automatic mode; raw counts, exclusions and version/hardware hashes appear in reports; reports contain only measured results or explicit not-measured status.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M3",
+      "depends_on": [
+        "FT-006",
+        "FT-011"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "evaluation"
+    },
+    {
+      "id": "FT-013",
+      "title": "Build accessible evidence and review interface",
+      "body": "Implementation:\nImplement static TypeScript UI against contract fixtures: sample/local-upload entry, processing state, canonical raster with evidence overlays, field errors, editing and explicit confirmation. Use an API client boundary so FT-016 can connect the service. Keyboard focus must move between fields and their evidence.\n\nOutput paths (relative to FormTrace root):\nweb/src/; web/tests/review.spec.ts; docs/REVIEW_WORKFLOW.md\n\nTesting and acceptance criteria:\nTest keyboard-only editing, zoom/resize overlay alignment, missing evidence, progress/error states and labels. Acceptance: users can inspect all eight fields and resolve synthetic errors in fixture mode; edits never silently imply acceptance; operator-origin values are visibly distinguished.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M4",
+      "depends_on": [
+        "FT-003",
+        "FT-009",
+        "FT-011"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "review-ui"
+    },
+    {
+      "id": "FT-014",
+      "title": "Persist review revisions and append-only audit events",
+      "body": "Implementation:\nCreate SQLite tables for documents/jobs, record revisions and review events, with transaction boundaries and initial migration. Persist base/result revision and actor/reason for corrections. Confirm records only when required issues are resolved; edits to accepted records reopen review. Keep product corrections out of all corpus paths.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/storage/; src/formtrace/review/; migrations/001_initial.sql; tests/storage/\n\nTesting and acceptance criteria:\nTest stale revision rejection, transaction failure, duplicate confirmation and edit-after-acceptance. Acceptance: no lost updates; audit events reconstruct review changes; operator entries require a reason and confirmation; restart marks interrupted jobs failed and never auto-retrains.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 10,
+      "milestone": "M4",
+      "depends_on": [
+        "FT-003",
+        "FT-010",
+        "FT-011"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "audit"
+    },
+    {
+      "id": "FT-015",
+      "title": "Implement revision-safe JSON and CSV export",
+      "body": "Implementation:\nBuild server export functions and connect export actions in the UI client. Export accepted current revisions only; JSON includes evidence and audit metadata, CSV contains normalized fields and a revision/audit reference. Neutralize formula-leading string cells and preserve canonical JSON values.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/export/; web/src/export.ts; tests/export/; docs/EXPORT_FORMAT.md\n\nTesting and acceptance criteria:\nRound-trip Unicode, decimal values, quotes/newlines and formula-leading text; test stale/unaccepted export rejection. Acceptance: output schema is versioned, export matches confirmed revision, all eight fields are present and audit is downloadable as JSON; CSV cannot execute supplied formula text in the covered prefixes.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M4",
+      "depends_on": [
+        "FT-010",
+        "FT-014"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "export"
+    },
+    {
+      "id": "FT-016",
+      "title": "Connect bounded API, sessions and deletion",
+      "body": "Implementation:\nImplement the planned endpoints and wire the UI to the service. Add one worker/four queued job bounds, typed errors, public sample-only enforcement, loopback local profile, opaque session capabilities and ownership checks for every document endpoint. Implement startup/five-minute expiry sweeps and explicit deletion. Private mode stays disabled pending FT-025.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/service/; tests/api/; web/src/api.ts; config/runtime.example.json\n\nTesting and acceptance criteria:\nExercise public sample flow and local upload through actual HTTP calls. Test inaccessible IDs, page/export bypass, origin/CORS, queue overflow, timeout and delete/expiry. Acceptance: no arbitrary public uploads, no token/document text in logs, all endpoints enforce ownership and local restart behavior is documented.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 10,
+      "milestone": "M4",
+      "depends_on": [
+        "FT-007",
+        "FT-011",
+        "FT-013",
+        "FT-014",
+        "FT-015"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "api"
+    },
+    {
+      "id": "FT-017",
+      "title": "Verify complete workflow and adversarial boundaries",
+      "body": "Implementation:\nIntegrate unit/contract/browser checks in CI and add end-to-end sample and local-upload journeys using real OCR. Cover correction, confirmation, evidence zoom, export and deletion. Add focused abuse cases for parser limits, public upload bypass and session leakage; repair in-scope defects within the slice or recorded reserve.\n\nOutput paths (relative to FormTrace root):\ntests/e2e/; tests/security/; .github/workflows/check.yml; reports/qa.md\n\nTesting and acceptance criteria:\nRun from a clean environment. Acceptance: supported fixtures complete extraction-to-export with no manual test labels; malformed/oversized inputs fail safely; cross-session page/record/export reads fail; no unresolved critical privacy/security defect remains. Record actual pass/fail output and limitations.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M5",
+      "depends_on": [
+        "FT-012",
+        "FT-016"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "verification"
+    },
+    {
+      "id": "FT-018",
+      "title": "Package offline local release and reproducible container",
+      "body": "Implementation:\nCreate a non-root container containing service, frontend, pinned Tesseract/por resources and cleared samples. Exclude corpus labels/test sets, credentials and development tools from runtime. Add local start/stop and build scripts, runtime health checks and license notices. Runtime must work without outbound network.\n\nOutput paths (relative to FormTrace root):\nDockerfile; .dockerignore; scripts/run-local.ps1; scripts/run-local.sh; deploy/local/; docs/LOCAL_RUN.md; reports/package-smoke.md\n\nTesting and acceptance criteria:\nBuild and launch cleanly, block outbound traffic and process generated PDF/image uploads. Acceptance: one documented command starts the UI, health checks pass, memory/disk limits are explicit, image contents pass secret/label/license inspection and deletion works inside the container.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M5",
+      "depends_on": [
+        "FT-002",
+        "FT-017"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "packaging"
+    },
+    {
+      "id": "FT-019",
+      "title": "Deploy capped public synthetic-sample demo",
+      "body": "Implementation:\nPrepare and deploy the sample-only container on the owner's configured Cloud Run project after necessary credentials/billing access exist. Pin digest, set one maximum instance, bounded concurrency/CPU configuration for jobs, TLS, quotas and a disable switch. Record live URL and real resource/cost configuration; public customer uploads remain disabled.\n\nOutput paths (relative to FormTrace root):\ndeploy/public/; scripts/deploy-public.ps1; docs/PUBLIC_OPERATIONS.md; reports/deployment-smoke.md\n\nTesting and acceptance criteria:\nSmoke-test real processing/review/export, cold/warm latency, restart/session-loss behavior and rollback. Acceptance: interactive sample workflow is reachable, arbitrary uploads and cross-session access fail, projected cost is <=EUR20/month for declared capped traffic, and provider alerts are not called a hard cap. Missing external access is a documented blocker, never a fabricated deployment.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M5",
+      "depends_on": [
+        "FT-018"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "deployment"
+    },
+    {
+      "id": "FT-020",
+      "title": "Publish month-four release and honest benchmark",
+      "body": "Implementation:\nRun the frozen supported/negative benchmark, build a deterministic synthetic failure gallery and publish the release bundle with source tag, local artifact, demo link, data/license cards and limitations. Gate automatic mode on all thresholds; otherwise ship assisted-only with clear measured limits. Keep public status and deployment evidence accurate.\n\nOutput paths (relative to FormTrace root):\nreports/release-v0.1/; docs/DATA_CARD.md; docs/LIMITATIONS.md; docs/RELEASE_NOTES.md; README.md\n\nTesting and acceptance criteria:\nReproduce commands from a clean checkout and verify artifact hashes/links. Acceptance: working demo plus local package, genuine extraction/evidence/review/export, measured counts/intervals and failure examples exist; no real-world accuracy or customer claim is inferred from synthetic results. A repository, video or static screenshot alone cannot close M5.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M5",
+      "depends_on": [
+        "FT-012",
+        "FT-017",
+        "FT-018",
+        "FT-019"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "public-release"
+    },
+    {
+      "id": "FT-021",
+      "title": "Measure correction time against generated-task baseline",
+      "body": "Implementation:\nCreate a 40-task counterbalanced study on generated invoices with existing exact truth. Measure entry+check+export time and final error rate for manual entry versus assisted workflow. Builder participation is sufficient for a limited simulation; optional owner-arranged participants may supplement it. Do not contact anyone or retain typed values as training labels.\n\nOutput paths (relative to FormTrace root):\nevaluation/workflow_study.py; evaluation/workflow_protocol.json; reports/workflow-study.md; reports/workflow-study.csv\n\nTesting and acceptance criteria:\nVerify timer and automatic truth comparison with fixtures, then run the study and include failures/cancellations. Acceptance: median/spread, paired savings, error counts and participant count are reported; >=30% time-saving and >=95% completion targets are evaluated without fabrication; n=1 is disclosed and not market validation.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M6",
+      "depends_on": [
+        "FT-020"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "product-validation"
+    },
+    {
+      "id": "FT-022",
+      "title": "Assess compatible existing public-label validation data",
+      "body": "Implementation:\nTimebox candidate/source/license and task-fit review to four hours. Existing human annotations are allowed. Prefer a compatible invoice-field corpus if verified; DocLayNet can only support its existing layout labels. Use remaining time for a deterministic bounded loader/evaluation or an evidence-gap report if no usable corpus exists; never manually transcribe missing labels.\n\nOutput paths (relative to FormTrace root):\ndata/licenses/public-candidates.json; evaluation/public_data.py; reports/external-evidence.md; tests/evaluation/test_public_data.py\n\nTesting and acceptance criteria:\nCheck exact rights, provenance, checksums and schema compatibility before admission; test excluded/unknown data cannot load. Acceptance: either measured results on authorized existing labels with separate domain reporting, or a documented no-admissible-data outcome. No unlicensed download/use, noncommercial workaround or claim of external validity from synthetic tests.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 12,
+      "milestone": "M6",
+      "depends_on": [
+        "FT-002",
+        "FT-012",
+        "FT-020"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P2"
+      ],
+      "phase": "external-validation"
+    },
+    {
+      "id": "FT-023",
+      "title": "Rehearse customer-controlled local deployment",
+      "body": "Implementation:\nRehearse clean install, local upload, restart, retention, delete and uninstall on a fresh local environment with synthetic records only. Record prerequisites and one-organization hardware/resource needs. Verify loopback binding and blocked network behavior; do not introduce hosted private uploads or a second platform.\n\nOutput paths (relative to FormTrace root):\ndocs/PRIVATE_DEPLOYMENT.md; scripts/check-local-install.ps1; reports/local-deployment-rehearsal.md\n\nTesting and acceptance criteria:\nRun the release instructions without relying on development caches. Acceptance: a new operator can start/process/export/delete using the documented commands, interrupted jobs fail predictably, originals/derived data expire within policy and runtime network isolation is demonstrated. Report missing environments instead of asserting customer deployment.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 10,
+      "milestone": "M6",
+      "depends_on": [
+        "FT-018",
+        "FT-020"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "deployment-validation"
+    },
+    {
+      "id": "FT-024",
+      "title": "Make evidence-based product and continuation decision",
+      "body": "Implementation:\nWrite a decision memo comparing workflow time/error results, deployment friction, measured costs and external-evidence gaps. Define a narrow offering hypothesis and explicit unvalidated demand/pricing assumptions. Prepare optional interview questions for owner use only; no outreach, promised revenue or partner dependency.\n\nOutput paths (relative to FormTrace root):\ndocs/PRODUCT_DECISION.md; docs/OPTIONAL_FEEDBACK.md; planning/actuals.csv\n\nTesting and acceptance criteria:\nTrace every numeric claim to a report and reconcile actual/reserve usage. Acceptance: continue, narrow or park recommendation follows the plan's gates; failed time-saving/error targets and absent market evidence are explicit. If parking, stop optional downstream build work; remaining budget is unspent, not falsely counted as delivered.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 10,
+      "milestone": "M6",
+      "depends_on": [
+        "FT-021",
+        "FT-022",
+        "FT-023"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "product-decision"
+    },
+    {
+      "id": "FT-025",
+      "title": "Add authenticated single-organization private profile",
+      "body": "Implementation:\nOnly if the continuation decision permits, add a private deployment profile behind an existing OIDC-capable reverse proxy; do not write a password/authentication system. Specify issuer/audience and identity validation, reject direct unauthenticated service access, and scope documents to authenticated owners. Keep public sample behavior separate.\n\nOutput paths (relative to FormTrace root):\ndeploy/private/; src/formtrace/service/private_auth.py; tests/auth/; docs/PRIVATE_AUTH.md\n\nTesting and acceptance criteria:\nTest missing/expired/wrong-audience credentials, spoofed identity headers and direct-port bypass using generated content. Acceptance: private uploads require validated identity, document/page/review/export/delete ownership is enforced, secrets stay outside images and local rehearsal works without a customer account.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 10,
+      "milestone": "M7",
+      "depends_on": [
+        "FT-016",
+        "FT-023",
+        "FT-024"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "private-hardening"
+    },
+    {
+      "id": "FT-026",
+      "title": "Verify private ownership, retention and recovery boundaries",
+      "body": "Implementation:\nExtend API security tests to two private identities and all document endpoints. Verify live deletion/expiry and log redaction after errors, retries and restarts. Document the distinct seven-day maximum backup retention target so deletion claims reflect stored backup copies.\n\nOutput paths (relative to FormTrace root):\ntests/security/test_private_boundaries.py; docs/RETENTION.md; reports/private-boundaries.md\n\nTesting and acceptance criteria:\nAttempt horizontal-access, guessed IDs, stale sessions and page/export leakage; inspect logs/temp/storage after deletion. Acceptance: zero cross-identity reads, no document text/capabilities in diagnostics, live deletion within five minutes and clear backup-expiry semantics. Fix routine failures within estimate/reserve; do not weaken ownership rules.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 8,
+      "milestone": "M7",
+      "depends_on": [
+        "FT-025"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "privacy-verification"
+    },
+    {
+      "id": "FT-027",
+      "title": "Implement migration and backup restore rehearsal",
+      "body": "Implementation:\nAdd schema-version preflight, a backup-before-migration script, bounded local backup retention and an idempotent sample migration. Restore a generated-data backup and confirm record/evidence/review revisions. Keep backups operator-controlled and private; do not add managed storage services.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/storage/migrate.py; scripts/backup-restore.ps1; migrations/; tests/storage/test_migration.py; reports/restore-drill.md\n\nTesting and acceptance criteria:\nTest old schema upgrade, failed migration rollback and repeated invocation. Acceptance: failure leaves a recoverable prior state, restored records export the same confirmed revisions, backup expiration is enforceable and instructions state downtime plus data-deletion implications.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 9,
+      "milestone": "M7",
+      "depends_on": [
+        "FT-014",
+        "FT-023",
+        "FT-025"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "reliability"
+    },
+    {
+      "id": "FT-028",
+      "title": "Add operational metrics and resource-cost guardrails",
+      "body": "Implementation:\nExpose content-free counters for failures, queued/rejected jobs, durations and expiry cleanup. Add resource-limit configuration, cost-estimation worksheet/script and a service-disable runbook. Verify private/public profiles independently without adding a monitoring SaaS dependency.\n\nOutput paths (relative to FormTrace root):\nsrc/formtrace/service/metrics.py; scripts/estimate-cost.py; deploy/limits.yaml; docs/OPERATIONS.md; reports/operations-drill.md\n\nTesting and acceptance criteria:\nRun 100 generated jobs including overload/timeouts and inspect emitted fields. Acceptance: p95/cold-start/failure counts and configured rates are reproducible, limits bound workload, no sensitive payload appears, actual vs estimated costs are distinguished and the disable/rollback procedure is exercised.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 9,
+      "milestone": "M7",
+      "depends_on": [
+        "FT-019",
+        "FT-025",
+        "FT-026"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "operations"
+    },
+    {
+      "id": "FT-029",
+      "title": "Audit release dependency and data rights",
+      "body": "Implementation:\nReconcile pinned software, fonts, Tesseract engine and traineddata resources, public datasets and distributed examples against manifests. Produce attribution/notice bundle and dependency inventory. Verify only approved assets enter release images and any public-data gallery has explicit redistribution rights.\n\nOutput paths (relative to FormTrace root):\ndata/licenses/manifest.json; THIRD_PARTY_NOTICES.md; reports/license-audit.md; scripts/check_release_assets.py; tests/test_release_assets.py\n\nTesting and acceptance criteria:\nRun inventory-to-manifest comparison and excluded-asset fixture checks. Acceptance: no untracked runtime/resource dependency or unapproved dataset remains; changed hashes trigger re-review; source/image/annotation rights are kept distinct. Unclear rights cause exclusion or escalation, never assumptions.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 9,
+      "milestone": "M8",
+      "depends_on": [
+        "FT-002",
+        "FT-020",
+        "FT-022",
+        "FT-025"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "maintenance"
+    },
+    {
+      "id": "FT-030",
+      "title": "Freeze regression suite and exercise release gates",
+      "body": "Implementation:\nConsolidate existing high-value fixtures for coordinates, parsing, abstention, revision/export, ownership and deletion into a release-gate command. Add schema compatibility fixtures and a small CI smoke corpus separate from sealed benchmark. Run full frozen evaluation once for the release candidate.\n\nOutput paths (relative to FormTrace root):\nscripts/check-release.ps1; scripts/check-release.sh; tests/regression/; .github/workflows/release-check.yml; reports/regression-release.md\n\nTesting and acceptance criteria:\nDeliberately alter a copied policy/schema fixture to prove gate failure. Acceptance: regressions block publication, automatic acceptance cannot become enabled by config drift, reports compare like-for-like datasets/versions and noisy latency observations are disclosed. No new tests merely duplicate implementation.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 9,
+      "milestone": "M8",
+      "depends_on": [
+        "FT-020",
+        "FT-026",
+        "FT-027",
+        "FT-028"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "regression"
+    },
+    {
+      "id": "FT-031",
+      "title": "Rehearse dependency upgrade and deployment rollback",
+      "body": "Implementation:\nApply one compatible dependency patch in an isolated branch/environment, rebuild the pinned image and run focused plus release smoke tests. Rehearse reverting the digest/config and restoring a generated-data database when needed. Document update cadence and ownership; do not automatically upgrade OCR resources.\n\nOutput paths (relative to FormTrace root):\ndocs/MAINTENANCE.md; docs/ROLLBACK.md; reports/upgrade-rollback-drill.md; dependency lockfiles\n\nTesting and acceptance criteria:\nRecord before/after versions and results, including schema compatibility and public/private smoke outcomes. Acceptance: rollback returns a working prior artifact, no truth/credentials enter the image and observed downtime/recovery steps are documented. If a safe patch is unavailable, simulate the workflow with two existing builds and state that limitation.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 9,
+      "milestone": "M8",
+      "depends_on": [
+        "FT-027",
+        "FT-028",
+        "FT-029",
+        "FT-030"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "maintenance"
+    },
+    {
+      "id": "FT-032",
+      "title": "Complete evidence ledger and activation-aware handoff",
+      "body": "Implementation:\nFinalize continue/maintain/park decision from actual outcomes, reconcile all task/reserve hours and list unresolved risks. Update README to distinguish implemented, measured and unvalidated capabilities only when evidence exists. Hand off commands, release digest, runbooks, owner actions and scope-change escalation to Astra high; parent owns AGENTS.md.\n\nOutput paths (relative to FormTrace root):\ndocs/HANDOFF.md; docs/PRODUCT_DECISION.md; README.md; planning/actuals.csv; planning/backlog.json\n\nTesting and acceptance criteria:\nRun the parent plan validator if available, verify release/document links and cross-check every completion claim. Acceptance: 336 planned work hours + 80 reserve = 416 remains explicit; spent/unspent hours are honest, future maintenance is separately budgeted, other projects remain parked until activation changes, and no invented customer or production claims appear.\n\nHandoff:\nRead docs/EXECUTION_PLAN.md and parent-supplied AGENTS.md if present. Start only after project activation and completed dependencies. Estimate includes implementation, testing and documentation. Record evidence and actual hours; use the shared reserve only for documented rework. Escalate scope/architecture/budget changes to Astra high with a concrete impact brief.",
+      "estimate_hours": 9,
+      "milestone": "M8",
+      "depends_on": [
+        "FT-024",
+        "FT-029",
+        "FT-030",
+        "FT-031"
+      ],
+      "labels": [
+        "type:task",
+        "priority:P1"
+      ],
+      "phase": "handoff"
+    }
+  ]
+}
+
